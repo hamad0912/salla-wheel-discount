@@ -1,23 +1,34 @@
-import requests
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحقق من الاتصال بـ Salla API</title>
+</head>
+<body>
+    <h1>التحقق من الاتصال بـ Salla API</h1>
+    <button onclick="checkConnection()">تحقق من الاتصال</button>
+    <p id="status"></p>
 
-# تعريف URL لـ Salla API
-url = "https://api.salla.sa/v2/store"
-
-# إضافة مفتاح التوكن (API Key) إذا كان مطلوبًا
-headers = {
-    "Authorization": "Bearer 7966c5c3c3172e8d88f690368d62b5d6"
-}
-
-def test_connection():
-    try:
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            print("تم الاتصال بنجاح بـ Salla API")
-        else:
-            print(f"فشل الاتصال، رمز الحالة: {response.status_code}")
-            print("تفاصيل الرسالة:", response.json())
-    except requests.exceptions.RequestException as e:
-        print("حدث خطأ أثناء الاتصال بـ Salla API:", e)
-
-# تشغيل الاختبار
-test_connection()
+    <script>
+        function checkConnection() {
+            fetch('https://api.salla.sa/v2/store', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer 7966c5c3c3172e8d88f690368d62b5d6'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('status').textContent = 'تم الاتصال بنجاح بـ Salla API';
+                } else {
+                    document.getElementById('status').textContent = 'فشل الاتصال';
+                }
+            })
+            .catch(error => {
+                document.getElementById('status').textContent = 'حدث خطأ أثناء الاتصال بـ Salla API';
+            });
+        }
+    </script>
+</body>
+</html>

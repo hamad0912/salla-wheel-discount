@@ -9,7 +9,7 @@ def create_coupon(discount_percentage, user_email):
     # استبدل بـ API URL الخاص بسلة
     api_url = "https://api.salla.sa/coupons/create"
     headers = {
-        "Authorization": "7966c5c3c3172e8d88f690368d62b5d6",  # ضع التوكن الخاص بك هنا
+        "Authorization": "Bearer 7966c5c3c3172e8d88f690368d62b5d6",  # ضع التوكن الخاص بك هنا
         "Content-Type": "application/json"
     }
     data = {

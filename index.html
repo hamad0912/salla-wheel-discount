@@ -1,43 +1,23 @@
-<!DOCTYPE html>
-<html lang="ar">
+import requests
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عجلة الحظ</title>
-</head>
+# تعريف URL لـ Salla API
+url = "https://api.salla.sa/v2/store"
 
-<body>
-    <h1>جرب حظك الآن!</h1>
-    <form action="/spin" method="POST">
-        <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
-        <button type="submit">جرب حظك الآن</button>
-    </form>
+# إضافة مفتاح التوكن (API Key) إذا كان مطلوبًا
+headers = {
+    "Authorization": "Bearer 7966c5c3c3172e8d88f690368d62b5d6"
+}
 
-    <div id="result"></div>
+def test_connection():
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            print("تم الاتصال بنجاح بـ Salla API")
+        else:
+            print(f"فشل الاتصال، رمز الحالة: {response.status_code}")
+            print("تفاصيل الرسالة:", response.json())
+    except requests.exceptions.RequestException as e:
+        print("حدث خطأ أثناء الاتصال بـ Salla API:", e)
 
-    <script>
-        // هنا سيتم عرض النتيجة بعد طلب الخصم
-        document.querySelector("form").addEventListener("submit", function(e) {
-            e.preventDefault(); // منع الإرسال العادي للنموذج
-            const formData = new FormData(this);
-            fetch("/spin", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').innerHTML = `
-                    <h2>${data.message}</h2>
-                    <p>كود الخصم: ${data.coupon_code}</p>
-                    <p>تفاصيل الكوبون: ${JSON.stringify(data.coupon_details)}</p>
-                `;
-                })
-                .catch(error => {
-                    document.getElementById('result').innerHTML = "حدث خطأ أثناء محاولة الحصول على الخصم.";
-                });
-        });
-    </script>
-</body>
-
-</html>
+# تشغيل الاختبار
+test_connection()

@@ -1,43 +1,34 @@
 <!DOCTYPE html>
 <html lang="ar">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عجلة الحظ</title>
+    <title>التحقق من الاتصال بـ Salla API</title>
 </head>
-
 <body>
-    <h1>جرب حظك الآن!</h1>
-    <form action="/spin" method="POST">
-        <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
-        <button type="submit">جرب حظك الآن</button>
-    </form>
-
-    <div id="result"></div>
+    <h1>التحقق من الاتصال بـ Salla API</h1>
+    <button onclick="checkConnection()">تحقق من الاتصال</button>
+    <p id="status"></p>
 
     <script>
-        // هنا سيتم عرض النتيجة بعد طلب الخصم
-        document.querySelector("form").addEventListener("submit", function(e) {
-            e.preventDefault(); // منع الإرسال العادي للنموذج
-            const formData = new FormData(this);
-            fetch("/spin", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').innerHTML = `
-                    <h2>${data.message}</h2>
-                    <p>كود الخصم: ${data.coupon_code}</p>
-                    <p>تفاصيل الكوبون: ${JSON.stringify(data.coupon_details)}</p>
-                `;
-                })
-                .catch(error => {
-                    document.getElementById('result').innerHTML = "حدث خطأ أثناء محاولة الحصول على الخصم.";
-                });
-        });
+        function checkConnection() {
+            fetch('https://api.salla.sa/v2/store', {
+                method: 'GET',
+                headers: {
+                    'Authorization': '7966c5c3c3172e8d88f690368d62b5d6'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('status').textContent = 'تم الاتصال بنجاح بـ Salla API';
+                } else {
+                    document.getElementById('status').textContent = 'فشل الاتصال';
+                }
+            })
+            .catch(error => {
+                document.getElementById('status').textContent = 'حدث خطأ أثناء الاتصال بـ Salla API';
+            });
+        }
     </script>
 </body>
-
 </html>
